@@ -6,6 +6,7 @@
 ###############################################
 
 import os,filecmp,io
+import subprocess
 
 #Response Codes To Be Used Further
 
@@ -39,12 +40,8 @@ def create(id,code,lang,source):
             extn = 'py'
         else if lang = 'python3.4':
             extn = 'py'
-        else if lang = 'ruby':
-            extn = 'rb'
         else if lang = 'javascript':
             extn = 'js'
-        else if lang = 'brainfuck':
-            extn = 'bf'
 
         filepath = dir+id+extn
 
@@ -66,35 +63,50 @@ def create(id,code,lang,source):
             return 1000
 
 
-def compiler(code,language,source):
+def compiler(id,lang):
+
         if lang = 'c++ 5.1':
-            extn = 'cpp'
+            filepath = dir+id+'.cpp'
+            command = 'gcc -o '+filepath
         else if lang = 'c++ 14.1':
-            extn = 'cpp'
+            filepath = dir+id+'.cpp'
+            command = 'gcc -std=c++1y -o '+filepath
         else if lang = 'bash':
-            extn = 'sh'
+            filepath = dir+id+'.sh'
+            command = 'sh '+filepath
         else if lang = 'java':
-            extn = 'java'
+            filepath = dir+id+'.java'
+            command = 'javac '+filepath
         else if lang = 'java7':
-            extn = 'java'
+            filepath = dir+id+'.java'
+            # New Environment Variable java7 must be created to use this
+            command = 'java7 '+filepath
         else if lang = 'haskell':
-            extn = 'hs'
+            filepath = dir+id+'.hs'
+            command = 'ghc '+filepath
         else if lang = 'pascalfpc':
-            extn = 'pas'
+            filepath = dir+id+'.pas'
+            command = 'fpc '+filepath
         else if lang = 'pascalgpc':
-            extn = 'pas'
+            filepath = dir+id+'.pas'
+            command = 'gpc '+filepath
         else if lang = 'perl':
-            extn = 'pl'
+            filepath = dir+id+'.pl'
+            command = 'perl -c '+filepath
         else if lang = 'python2.7':
-            extn = 'py'
+            filepath = dir+id+'.py'
+            command = 'python -m py_compile '+filepath
         else if lang = 'python3.4':
-            extn = 'py'
-        else if lang = 'ruby':
-            extn = 'rb'
+            filepath = dir+id+'.py'
+            command = 'python3 -m py_compile '+filepath
         else if lang = 'javascript':
-            extn = 'js'
-        else if lang = 'brainfuck':
-            extn = 'bf'
+            filepath = dir+id+'.js'
+            #using rhino interpreter
+            command = 'rhino '+filepath
+        #This will compile the script
+        shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        shell_process.wait()
+        shell_return = shell_process.returncode
 
 
 
