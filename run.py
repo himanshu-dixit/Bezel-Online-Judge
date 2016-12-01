@@ -13,37 +13,37 @@ import subprocess
 response = {1000:'Some Error Occured',1001:'Compilation Error',1002:'Runtime Error',1003:'Memory Limit Exceeded',1004:'Time Limit Exceeded',1005:'Source Limit Exceeded',1006:'Wrong Answer',1007:'Unknown Error',2000:'File Created',2001:'File Compiled',2003:'Correct Answer'}
 #Path to temporaray location
 
-dir = '/temp/code_location'
+dir = 'temp/code_location'
 
 #Create Function To Get Data
 
 def create(id,code,lang,source):
         if lang == 'c':
-            extn = 'c'
+            extn = '.c'
         elif lang == 'c++ 5.1':
-            extn = 'cpp'
+            extn = '.cpp'
         elif lang == 'c++ 14.1':
-            extn = 'cpp'
+            extn = '.cpp'
         elif lang == 'bash':
-            extn = 'sh'
+            extn = '.sh'
         elif lang == 'java':
-            extn = 'java'
+            extn = '.java'
         elif lang == 'java7':
-            extn = 'java'
+            extn = '.java'
         elif lang == 'haskell':
-            extn == 'hs'
+            extn == '.hs'
         elif lang == 'pascalfpc':
-            extn = 'pas'
+            extn = '.pas'
         elif lang == 'pascalgpc':
-            extn = 'pas'
+            extn = '.pas'
         elif lang == 'perl':
-            extn = 'pl'
+            extn = '.pl'
         elif lang == 'python2.7':
-            extn = 'py'
+            extn = '.py'
         elif lang == 'python3.4':
-            extn = 'py'
+            extn = '.py'
         elif lang == 'javascript':
-            extn = 'js'
+            extn = '.js'
 
         filepath = dir+id+extn
 
@@ -68,13 +68,12 @@ def create(id,code,lang,source):
 filepath =''
 
 def compile(id,lang):
-
         if lang == 'c':
             filepath = dir+id+'.c'
-            command = 'gcc'+filepath+' -o '+dir+id
+            command = 'gcc '+filepath+' -o '+dir+id
         elif lang == 'c++ 5.1':
             filepath = dir+id+'.cpp'
-            command = 'gcc'+filepath+' -o '+dir+id
+            command = 'gcc '+filepath+' -o '+dir+id
         elif lang == 'c++ 14.1':
             filepath = dir+id+'.cpp'
             command = 'gcc -std=c++1y '+filepath+' -o '+dir+id
@@ -114,15 +113,12 @@ def compile(id,lang):
         shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         shell_process.wait()
         shell_return = shell_process.returncode
-        if(len(shell_return) > 10):
+        if(shell_return > 10):
             #Error
             return 1001
         else:
             #File Has Been Compiled
-            return 2001
-
-
-
+         return 2001
 
 def run(id,lang,timeout):
     if lang == 'java':
@@ -156,7 +152,7 @@ def run(id,lang,timeout):
         return 1004
     else:
         os.remove('out.txt')
-return 1007
+        return 1007
 
 def check(id):
     if(filecmp.cmp(id+'.in', id+'.out')):
@@ -174,13 +170,19 @@ def terminate(id):
         return 3001
     else:
         #All Files Deleted
+        return 1000
 
 #main calling
 
 id='35'
 lang = 'c'
 source = 5000 #5 MB
-code = 'file.c'
+code = """#include<stdio.h>
+int main()
+{
+    printf("Hello World"); return 0;
+}
+"""
 timeout = 1 #secs
 create = create(id,code,lang,source)
 
@@ -190,7 +192,7 @@ if(create==2000):
     if(compile==2001):
         print 'File has been compiled'
         run = run(id,lang,timeout)
-        if(run==1004 || run==1007):
+        if(run==1004 or run==1007):
             print("Runtime Error")
             terminate(id)
         else:
