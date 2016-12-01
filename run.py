@@ -64,8 +64,10 @@ def create(id,code,lang,source):
         else:
             return 1000
 
+#Global Declaration
+filepath =''
 
-def compiler(id,lang):
+def compile(id,lang):
 
         if lang = 'c':
             filepath = dir+id+'.c'
@@ -107,7 +109,7 @@ def compiler(id,lang):
         else if lang = 'javascript':
             filepath = dir+id+'.js'
             #using rhino interpreter
-            command = 'rhino '+filepath
+            #command = 'rhino '+filepath
         #This will compile the script
         shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         shell_process.wait()
@@ -133,15 +135,34 @@ def run(id,lang,timeout):
      cmd = 'python '+filepath
     elif lang=='python3.4':
      cmd = 'python3 '+filepath
+    elif lang=='javascript':
+     cmd = 'rhino '+filepath
+    elif lang=='bash':
+     cmd = 'sh '+filepath
+    elif lang=='pel':
+     cmd = 'pel '+filepath
+    elif lang=='gpc':
+     cmd = 'sh '+filepath
+    elif lang=='fpc':
+     cmd = 'fpc '+filepath
+    elif lang=='haskell':
+     cmd = 'ghc '+filepath
     r = os.system('timeout '+timeout+' '+cmd+' < '+input+' > out.txt')
     print "Running File"
+   if r==0:
+        return 2003
+    elif r==31744:
+        os.remove('out.txt')
+        return 1004
+    else:
+        os.remove('out.txt')
+return 1007
 
 def check(id):
     if(filecmp.cmp(id+'.in', id+'.out')):
         return 2003
     else:
         return 1006
-    print "Processing File Started"
 
 def terminate(id):
     command = 'rm -f '+dir+id+'*'
@@ -152,3 +173,38 @@ def terminate(id):
         #File Not Deleted
     else:
         #All Files Deleted
+
+#main calling
+
+id = 35
+lang = 'c'
+source = 5000 #5 MB
+code = 'file.c'
+timeout = 1 #secs
+create = create(id,code,lang,source)
+
+if(create==2000):
+    #file succesfullt create
+    compile = compile(id,lang)
+    if(compile==2001):
+        print 'File has been compiled'
+        run = run(id,lang,timeout)
+        if(run==1004 || run==1007):
+            print("Runtime Error")
+            terminate(id)
+        else:
+            check = check(id)
+            if(check == 2003):
+             print 'Correct Answer'
+            else:
+             print 'Wrong Answer'
+
+            terminate(id)
+             
+    else:
+        print 'Compilation Error'
+        terminate(id)
+elif(create==1005):
+    print 'Source Limit Exceeded'
+else:
+    print 'Some Error ocurred'
