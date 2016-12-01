@@ -18,31 +18,31 @@ dir = '/temp/code_location'
 #Create Function To Get Data
 
 def create(id,code,lang,source):
-        if lang = 'c':
+        if lang == 'c':
             extn = 'c'
-        else if lang = 'c++ 5.1':
+        elif lang == 'c++ 5.1':
             extn = 'cpp'
-        else if lang = 'c++ 14.1':
+        elif lang == 'c++ 14.1':
             extn = 'cpp'
-        else if lang = 'bash':
+        elif lang == 'bash':
             extn = 'sh'
-        else if lang = 'java':
+        elif lang == 'java':
             extn = 'java'
-        else if lang = 'java7':
+        elif lang == 'java7':
             extn = 'java'
-        else if lang = 'haskell':
-            extn = 'hs'
-        else if lang = 'pascalfpc':
+        elif lang == 'haskell':
+            extn == 'hs'
+        elif lang == 'pascalfpc':
             extn = 'pas'
-        else if lang = 'pascalgpc':
+        elif lang == 'pascalgpc':
             extn = 'pas'
-        else if lang = 'perl':
+        elif lang == 'perl':
             extn = 'pl'
-        else if lang = 'python2.7':
+        elif lang == 'python2.7':
             extn = 'py'
-        else if lang = 'python3.4':
+        elif lang == 'python3.4':
             extn = 'py'
-        else if lang = 'javascript':
+        elif lang == 'javascript':
             extn = 'js'
 
         filepath = dir+id+extn
@@ -69,44 +69,44 @@ filepath =''
 
 def compile(id,lang):
 
-        if lang = 'c':
+        if lang == 'c':
             filepath = dir+id+'.c'
             command = 'gcc'+filepath+' -o '+dir+id
-        else if lang = 'c++ 5.1':
+        elif lang == 'c++ 5.1':
             filepath = dir+id+'.cpp'
             command = 'gcc'+filepath+' -o '+dir+id
-        else if lang = 'c++ 14.1':
+        elif lang == 'c++ 14.1':
             filepath = dir+id+'.cpp'
             command = 'gcc -std=c++1y '+filepath+' -o '+dir+id
-        else if lang = 'bash':
+        elif lang == 'bash':
             filepath = dir+id+'.sh'
             command = ''
-        else if lang = 'java':
+        elif lang == 'java':
             filepath = dir+id+'.java'
             command = 'javac '+filepath
-        else if lang = 'java7':
+        elif lang == 'java7':
             filepath = dir+id+'.java'
             # New Environment Variable java7 must be created to use this
             command = 'java7 '+filepath
-        else if lang = 'haskell':
+        elif lang == 'haskell':
             filepath = dir+id+'.hs'
             command = 'ghc '+filepath
-        else if lang = 'pascalfpc':
+        elif lang == 'pascalfpc':
             filepath = dir+id+'.pas'
             command = 'fpc '+filepath
-        else if lang = 'pascalgpc':
+        elif lang == 'pascalgpc':
             filepath = dir+id+'.pas'
             command = 'gpc '+filepath
-        else if lang = 'perl':
+        elif lang == 'perl':
             filepath = dir+id+'.pl'
             command = 'perl -c '+filepath
-        else if lang = 'python2.7':
+        elif lang == 'python2.7':
             filepath = dir+id+'.py'
             command = 'python -m py_compile '+filepath
-        else if lang = 'python3.4':
+        elif lang == 'python3.4':
             filepath = dir+id+'.py'
             command = 'python3 -m py_compile '+filepath
-        else if lang = 'javascript':
+        elif lang == 'javascript':
             filepath = dir+id+'.js'
             #using rhino interpreter
             #command = 'rhino '+filepath
@@ -127,7 +127,7 @@ def compile(id,lang):
 def run(id,lang,timeout):
     if lang == 'java':
      cmd = 'java '+filepath
-    else if lang == 'java7':
+    elif lang == 'java7':
      cmd = 'java7 '+filepath
     elif lang=='c++ 5.1' or lang=='c++ 14.1' or lang=='c':
      cmd = './'+filepath
@@ -149,7 +149,7 @@ def run(id,lang,timeout):
      cmd = 'ghc '+filepath
     r = os.system('timeout '+timeout+' '+cmd+' < '+input+' > out.txt')
     print "Running File"
-   if r==0:
+    if r==0:
         return 2003
     elif r==31744:
         os.remove('out.txt')
@@ -171,12 +171,13 @@ def terminate(id):
     shell_return = shell_process.returncode
     if(shell_return):
         #File Not Deleted
+        return 3001
     else:
         #All Files Deleted
 
 #main calling
 
-id = 35
+id='35'
 lang = 'c'
 source = 5000 #5 MB
 code = 'file.c'
@@ -200,7 +201,7 @@ if(create==2000):
              print 'Wrong Answer'
 
             terminate(id)
-             
+
     else:
         print 'Compilation Error'
         terminate(id)
