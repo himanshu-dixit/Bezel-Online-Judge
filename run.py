@@ -143,7 +143,7 @@ def run(id,lang,timeout):
      cmd = 'fpc '+filepath
     elif lang=='haskell':
      cmd = 'ghc '+filepath
-    r = os.system('timeout '+timeout+' '+cmd+' < '+input+' > out.txt')
+    r = os.system("timeout "+timeout+" "+cmd+" < "+input+" > "+id+".txt")
     print "Running File"
     if r==0:
         return 2003
@@ -183,7 +183,7 @@ int main()
     printf("Hello World"); return 0;
 }
 """
-timeout = 1 #secs
+timeout = '1' #secs
 create = create(id,code,lang,source)
 
 if(create==2000):
