@@ -143,19 +143,13 @@ def run(id,lang,timeout):
      cmd = 'fpc '+filepath
     elif lang=='haskell':
      cmd = 'ghc '+filepath
-    r = os.system("timeout "+timeout+" "+cmd+" < "+input+" > "+id+".txt")
+    input = '1'
+    r = os.system("timeout "+timeout+" "+cmd+" < "+input+" > "+id+".out")
     print "Running File"
-    if r==0:
-        return 2003
-    elif r==31744:
-        os.remove('out.txt')
-        return 1004
-    else:
-        os.remove('out.txt')
-        return 1007
+
 
 def check(id):
-    if(filecmp.cmp(id+'.in', id+'.out')):
+    if(filecmp.cmp(dir+id+'.in', dir+id+'')):
         return 2003
     else:
         return 1006
