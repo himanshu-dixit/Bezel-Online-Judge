@@ -147,7 +147,6 @@ def run(id,lang,timeout):
     r = os.system("timeout "+timeout+" "+cmd+" < "+input+" > "+id+".out")
     print "Running File"
 
-
 def check(id):
     if(filecmp.cmp(dir+id+'.in', dir+id+'')):
         return 2003
@@ -170,7 +169,7 @@ def terminate(id):
 
 id='35'
 lang = 'c'
-source = 5000 #5 MB
+source = 5000 #5 MB, to be customized
 code = """#include<stdio.h>
 int main()
 {
