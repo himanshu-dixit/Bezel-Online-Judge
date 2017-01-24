@@ -13,7 +13,7 @@ import subprocess
 response = {1000:'Some Error Occured',1001:'Compilation Error',1002:'Runtime Error',1003:'Memory Limit Exceeded',1004:'Time Limit Exceeded',1005:'Source Limit Exceeded',1006:'Wrong Answer',1007:'Unknown Error',2000:'File Created',2001:'File Compiled',2003:'Correct Answer'}
 #Path to temporaray location
 
-dir = 'temp/code_location'
+dir = 'temp/code_location/'
 
 #Create Function To Get Data
 
@@ -64,10 +64,9 @@ def create(id,code,lang,source):
         else:
             return 1000
 
-#Global Declaration
-filepath =''
 
 def compile(id,lang):
+        print "Compiling File"
         if lang == 'c':
             filepath = dir+id+'.c'
             command = 'gcc '+filepath+' -o '+dir+id
@@ -121,12 +120,14 @@ def compile(id,lang):
          return 2001
 
 def run(id,lang,timeout):
+    filepath = dir+id
     if lang == 'java':
      cmd = 'java '+filepath
     elif lang == 'java7':
      cmd = 'java7 '+filepath
     elif lang=='c++ 5.1' or lang=='c++ 14.1' or lang=='c':
-     cmd = './'+filepath
+     cmd = './'+id
+     os.system("cd "+dir)
     elif lang=='python2.7':
      cmd = 'python '+filepath
     elif lang=='python3.4':
@@ -144,26 +145,30 @@ def run(id,lang,timeout):
     elif lang=='haskell':
      cmd = 'ghc '+filepath
     input = '1'
-    r = os.system("timeout "+timeout+" "+cmd+" < "+input+" > "+id+".out")
+    #os.system("touch "+dir+id+".out")
+    r = os.system("timeout "+timeout+" "+cmd+" < "+input+" &> "+dir+id+".out")
+    print "timeout "+timeout+" "+cmd+" < "+input+" &> "+dir+id+".out"
     print "Running File"
 
 def check(id):
+    print "Checking File"
     if(filecmp.cmp(dir+id+'.in', dir+id+'')):
         return 2003
     else:
         return 1006
 
 def terminate(id):
-    command = 'rm -f '+dir+id+'*'
-    shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-    shell_process.wait()
-    shell_return = shell_process.returncode
-    if(shell_return):
+    print 'terminating'
+    #command = 'rm -f '+dir+id+'*'
+    #shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+    #shell_process.wait()
+    #shell_return = shell_process.returncode
+    #if(shell_return):
         #File Not Deleted
-        return 3001
-    else:
+        #return 3001
+    #else:
         #All Files Deleted
-        return 1000
+        #return 1000
 
 #main calling
 
@@ -173,7 +178,7 @@ source = 5000 #5 MB, to be customized
 code = """#include<stdio.h>
 int main()
 {
-    printf("Hello World"); return 0;
+    printf("1"); return 0;
 }
 """
 timeout = '1' #secs
@@ -196,7 +201,6 @@ if(create==2000):
              print 'Wrong Answer'
 
             terminate(id)
-
     else:
         print 'Compilation Error'
         terminate(id)
