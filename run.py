@@ -145,27 +145,16 @@ def run(id,lang,timeout):
     elif lang=='haskell':
      cmd = 'ghc '+filepath
     input = '1'
-    print os.getcwd()
+
     os.chdir("/home/osboxes/Desktop/Bezel/temp/code_location/")
-    print os.getcwd()
     #os.system("touch "+dir+id+".out")
     r = os.system("timeout "+timeout+" "+cmd+" > "+id+".out")
-    print r
-    print "timeout "+timeout+" "+cmd+" &> "+id+".out"
+    #print r
+    #print "timeout "+timeout+" "+cmd+" &> "+id+".out"
     print "Running File"
 
 def check(id):
     print "Checking File"
-    print filecmp.cmp(id+'.in', id+'.out')
-    f = open(id+'.out', 'r') # open file in read mode
-    data = f.read()      # copy to a string
-    f.close()               # close the file
-    print data
-
-    f = open(id+'.in', 'r') # open file in read mode
-    data = f.read()      # copy to a string
-    f.close()               # close the file
-    print data
 
     if(filecmp.cmp(id+'.in', id+'.out',shallow=False)):
         return 2003
@@ -173,7 +162,7 @@ def check(id):
         return 1006
 
 def terminate(id):
-    print 'terminating'
+    print 'Terminating'
     #command = 'rm -f '+dir+id+'*'
     #shell_process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     #shell_process.wait()
